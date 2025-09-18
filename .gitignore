@@ -1,0 +1,16 @@
+# Rust build and dependency files
+/target/
+/Cargo.lock
+
+# IDE and editor files
+**/*.rs.bk
+.idea/
+.vscode/
+*.swp
+
+# By-products of cargo
+Cargo.toml.orig
+
+# Misc
+*.log
+.DS_Store
