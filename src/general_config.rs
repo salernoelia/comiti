@@ -4,7 +4,7 @@ const GENERAL_CONFIG_FILE: &str = "commitr.json";
 
 #[derive(Serialize, Deserialize)]
 pub struct GeneralConfig {
-    directories: Vec<String>,
+    pub directories: Vec<String>,
 }
 
 pub fn load() -> Result<GeneralConfig, serde_json::Error> {
