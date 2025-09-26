@@ -27,6 +27,10 @@ impl Git {
         Self::run_git_command(&["fetch"], path, "fetch")
     }
 
+    pub fn pull(path: &str) -> std::io::Result<()> {
+        Self::run_git_command(&["pull"], path, "pull")
+    }
+
     pub fn add_all(path: &str) -> std::io::Result<()> {
         Self::run_git_command(&["add", "."], path, "add")
     }

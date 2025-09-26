@@ -8,6 +8,10 @@ fn main() {
         Ok(_) => println!("Fetch succeeded"),
         Err(e) => eprintln!("Fetch failed: {}", e),
     }
+    match git::Git::pull(".") {
+        Ok(_) => println!("Pull succeeded"),
+        Err(e) => eprintln!("Pull failed: {}", e),
+    }
 
     match git::Git::add_all(".") {
         Ok(_) => println!("Add succeeded"),
@@ -25,7 +29,14 @@ fn main() {
     }
 
     cli::init();
-    let general_config = general_config::load().unwrap();
+
+    let general_config = match general_config::load() {
+        Ok(cfg) => cfg,
+        Err(e) => {
+            eprintln!("Failed to load general config: {}", e);
+            return;
+        }
+    };
 
     println!("{}", serde_json::to_string(&general_config).unwrap());
 
