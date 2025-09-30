@@ -22,7 +22,13 @@ impl Watcher {
         let mut watcher: RecommendedWatcher = NotifyWatcher::new(
             move |res: NotifyResult<Event>| {
                 if let Ok(event) = res {
-                    trigger(event);
+                    let ignore = event
+                        .paths
+                        .iter()
+                        .any(|p| p.components().any(|c| c.as_os_str() == ".git"));
+                    if !ignore {
+                        trigger(event);
+                    }
                 }
             },
             Config::default(),

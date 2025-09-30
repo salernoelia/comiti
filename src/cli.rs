@@ -26,7 +26,7 @@ impl Command {
 
     fn description(&self) -> String {
         match self {
-            Command::Init => "init   - initialize current dir".to_string(),
+            Command::Init => "init   - initialize comiti".to_string(),
             Command::Add => "add    - add current dir".to_string(),
             Command::List => "list   - list all dirs with index".to_string(),
             Command::Remove => "remove - remove current or by index".to_string(),

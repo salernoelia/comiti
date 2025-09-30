@@ -29,7 +29,7 @@ fn main() {
     //     Err(e) => eprintln!("Push failed: {}", e),
     // }
 
-    // cli::init();
+    cli::init();
     general_config::add_dir(String::from("/Users/eliasalerno/Github/comiti")).unwrap();
 
     let general_config = match general_config::load() {
