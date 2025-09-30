@@ -6,7 +6,7 @@ use std::path::PathBuf;
 
 pub struct Watcher {
     paths: Vec<PathBuf>,
-    watcher: Option<RecommendedWatcher>, // Add this field
+    watcher: Option<RecommendedWatcher>,
 }
 
 impl Watcher {
