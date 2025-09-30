@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-const GENERAL_CONFIG_FILE: &str = "commitr.json";
+const GENERAL_CONFIG_FILE: &str = "comiti.json";
 
 #[derive(Serialize, Deserialize)]
 pub struct GeneralConfig {

@@ -2,6 +2,7 @@ mod cli;
 mod general_config;
 mod git;
 mod user_config;
+mod watcher;
 
 fn main() {
     match git::Git::fetch(".") {
