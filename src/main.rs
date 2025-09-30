@@ -5,31 +5,32 @@ mod user_config;
 mod watcher;
 
 fn main() {
-    match git::Git::fetch(".") {
-        Ok(_) => println!("Fetch succeeded"),
-        Err(e) => eprintln!("Fetch failed: {}", e),
-    }
-    match git::Git::pull(".") {
-        Ok(_) => println!("Pull succeeded"),
-        Err(e) => eprintln!("Pull failed: {}", e),
-    }
+    // match git::Git::fetch(".") {
+    //     Ok(_) => println!("Fetch succeeded"),
+    //     Err(e) => eprintln!("Fetch failed: {}", e),
+    // }
+    // match git::Git::pull(".") {
+    //     Ok(_) => println!("Pull succeeded"),
+    //     Err(e) => eprintln!("Pull failed: {}", e),
+    // }
 
-    match git::Git::add_all(".") {
-        Ok(_) => println!("Add succeeded"),
-        Err(e) => eprintln!("Add failed: {}", e),
-    }
+    // match git::Git::add_all(".") {
+    //     Ok(_) => println!("Add succeeded"),
+    //     Err(e) => eprintln!("Add failed: {}", e),
+    // }
 
-    match git::Git::commit(".", "commited from comittr") {
-        Ok(_) => println!("Commit succeeded"),
-        Err(e) => eprintln!("Commit failed: {}", e),
-    }
+    // match git::Git::commit(".", "commited from comittr") {
+    //     Ok(_) => println!("Commit succeeded"),
+    //     Err(e) => eprintln!("Commit failed: {}", e),
+    // }
 
-    match git::Git::push(".") {
-        Ok(_) => println!("Push succeeded"),
-        Err(e) => eprintln!("Push failed: {}", e),
-    }
+    // match git::Git::push(".") {
+    //     Ok(_) => println!("Push succeeded"),
+    //     Err(e) => eprintln!("Push failed: {}", e),
+    // }
 
-    cli::init();
+    // cli::init();
+    general_config::add_dir(String::from("/Users/eliasalerno/Github/comiti")).unwrap();
 
     let general_config = match general_config::load() {
         Ok(cfg) => cfg,
@@ -41,9 +42,37 @@ fn main() {
 
     println!("{}", serde_json::to_string(&general_config).unwrap());
 
-    let user_config = user_config::load(String::from(".")).unwrap();
-    let all_user_configs = user_config::load_all(general_config.directories).unwrap();
+    let directories_pathbuf: Vec<std::path::PathBuf> = general_config
+        .directories
+        .iter()
+        .map(|d| std::path::PathBuf::from(d))
+        .collect();
 
-    println!("{}", serde_json::to_string(&user_config).unwrap());
-    println!("{}", serde_json::to_string(&all_user_configs).unwrap());
+    let mut watcher = watcher::Watcher::new(directories_pathbuf);
+    watcher.watch(|event| {
+        println!("Filesystem event: {:?}", event);
+
+        match git::Git::add_all(".") {
+            Ok(_) => println!("Add succeeded"),
+            Err(e) => eprintln!("Add failed: {}", e),
+        }
+
+        match git::Git::commit(".", "commited from comittr") {
+            Ok(_) => println!("Commit succeeded"),
+            Err(e) => eprintln!("Commit failed: {}", e),
+        }
+
+        match git::Git::push(".") {
+            Ok(_) => println!("Push succeeded"),
+            Err(e) => eprintln!("Push failed: {}", e),
+        }
+    });
+
+    //     let user_config = user_config::load(String::from(".")).unwrap();
+    // let all_user_configs = user_config::load_all(general_config.directories.clone()).unwrap();
+
+    // println!("{}", serde_json::to_string(&user_config).unwrap());
+    // println!("{}", serde_json::to_string(&all_user_configs).unwrap());
+
+    std::thread::park();
 }
